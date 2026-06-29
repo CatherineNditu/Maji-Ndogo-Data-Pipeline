@@ -1,85 +1,164 @@
 # Maji Ndogo Data Pipeline
 
-This project implements a modular ETL (Extract, Transform, Load) pipeline for processing agricultural and weather datasets from the Maji Ndogo Farm Survey. The fictional nation of Maji Ndogo serves as a realistic representation of agricultural systems across Africa, highlighting the transformative role of data in improving productivity and sustainability. The pipeline incorporates automated data cleaning, statistical validation, and quality assurance mechanisams, with a strong focus on modular architecture, reproducibility, testing, and configuration-driven development practices.
+## Overview
 
-## What it does
+The **Maji Ndogo Data Pipeline** is a modular ETL (Extract, Transform, Load) project that processes agricultural survey and weather datasets from the fictional nation of **Maji Ndogo**. Designed to reflect real-world agricultural systems across Africa, the project demonstrates how data engineering can improve data quality and support reliable, data-driven decision-making.
 
-1. *Ingests* farm survey data from a SQLite database and weather data
-   from CSV files hosted on the web.
-2. *Cleans* the data — fixing mislabeled columns, correcting misspelled
-   categorical values, and mapping fields to their nearest weather station.
-3. *Validates* the cleaned data with automated tests (pytest) and a
-   statistical hypothesis test comparing field-reported weather to
-   independent weather station readings.
-4. *Exposes* the result as ready-to-analyse pandas DataFrames for
-   exploratory data analysis (EDA).
+The pipeline automates data ingestion, cleaning, validation, and preparation while following software engineering best practices, including object-oriented programming (OOP), modular architecture, configuration-driven development, logging, and automated testing.
 
-## Project structure
+---
 
+## Features
 
+* Extracts farm survey data from a SQLite database.
+* Loads weather data from CSV files hosted online.
+* Cleans and standardizes agricultural and weather datasets.
+* Corrects inconsistent and misspelled categorical values.
+* Maps farm locations to their nearest weather stations.
+* Performs automated data quality validation using **Pytest**.
+* Validates data using statistical hypothesis testing with **SciPy**.
+* Produces clean, analysis-ready Pandas DataFrames for Exploratory Data Analysis (EDA).
+
+---
+
+## Project Structure
+
+```text
 maji-ndogo-data-pipeline/
+├── data/
+│   └── Maji_Ndogo_farm_survey_small.db
+├── notebooks/
+│   └── eda.ipynb
 ├── src/
 │   ├── __init__.py
-│   ├── config.py                   # Central configuration (paths, queries, mappings)
-│   ├── data_ingestion.py           # Low-level SQL + CSV ingestion functions
-│   ├── field_data_processor.py     # FieldDataProcessor class — cleans field survey data
-│   └── weather_data_processor.py   # WeatherDataProcessor class — cleans weather station data
-├── notebooks/
-│   └── eda.ipynb                    # Exploratory analysis — imports the modules above
+│   ├── config_params.py
+│   ├── data_ingestion.py
+│   ├── data_field_processor.py
+│   └── weather_data_processor.py
 ├── tests/
-│   └── validate_data.py             # pytest checks on the cleaned data
-├── data/                             # Local only — gitignored, holds the .db file
+│   └── validate_data.py
 ├── requirements.txt
+├── .gitignore
 └── README.md
+```
 
+---
 
-## Getting started
+## Installation
 
-bash
-git clone https://github.com/Vincent-kiptoo/maji-ndogo-data-pipeline.git
-cd maji-ndogo-data-pipeline
+### 1. Clone the repository
 
-python -m venv venv
-source venv/Scripts/activate   # Windows Git Bash
-# venv\Scripts\Activate.ps1   # Windows PowerShell
+```bash
+git clone https://github.com/CatherineNditu/Maji-Ndogo-Data-Pipeline.git
+cd Maji-Ndogo-Data-Pipeline
+```
 
+### 2. Create a virtual environment
+
+**Windows (Command Prompt)**
+
+```bash
+py -m venv venv
+venv\Scripts\activate
+```
+
+**Windows (PowerShell)**
+
+```powershell
+py -m venv venv
+venv\Scripts\Activate.ps1
+```
+
+### 3. Install dependencies
+
+```bash
 pip install -r requirements.txt
+```
 
+> **Note:** The SQLite database (`Maji_Ndogo_farm_survey_small.db`) is excluded from this repository via `.gitignore`. Place the database inside the `data/` folder before running the pipeline.
 
-You'll also need Maji_Ndogo_farm_survey_small.db in the data/ folder
-(not included in this repo — see .gitignore).
+---
 
 ## Usage
 
-python
-from config import config_params
-from src.data_ingestion import create_db_engine, query_data, read_from_web_CSV
-from src.field_data_processor import FieldDataProcessor
+```python
+from src.config_params import config_params
+from src.data_field_processor import FieldDataProcessor
 from src.weather_data_processor import WeatherDataProcessor
 
+# Process field survey data
 field_processor = FieldDataProcessor(config_params)
 field_processor.process()
 field_df = field_processor.df
 
+# Process weather data
 weather_processor = WeatherDataProcessor(config_params)
 weather_processor.process()
 weather_df = weather_processor.weather_df
+```
 
+---
 
-## Running tests
+## Running Tests
 
-bash
+Run the automated validation tests using:
+
+```bash
 pytest tests/validate_data.py -v
+```
 
+---
 
-## Tech stack
+## Technology Stack
 
-- *pandas* / *SQLAlchemy* — data ingestion and manipulation
-- *scipy* — statistical hypothesis testing
-- *pytest* — automated data validation
-- *logging* — pipeline observability
+* Python
+* Pandas
+* SQLAlchemy
+* SQLite
+* SciPy
+* Pytest
+* Logging
 
-## Status
+---
 
-Work in progress — built as a portfolio project demonstrating data
-pipeline design, OOP in Python, and Git/GitHub workflows.
+## Skills Demonstrated
+
+This project demonstrates practical experience in:
+
+* ETL pipeline development
+* Data ingestion and transformation
+* Data cleaning and preprocessing
+* Statistical data validation
+* Object-Oriented Programming (OOP)
+* Modular software architecture
+* Configuration management
+* Automated testing with Pytest
+* Git and GitHub version control
+* Exploratory Data Analysis (EDA)
+
+---
+
+## Future Improvements
+
+* Add workflow orchestration with Apache Airflow.
+* Containerize the pipeline using Docker.
+* Implement CI/CD with GitHub Actions.
+* Integrate cloud storage for scalable data processing.
+* Add data quality monitoring and reporting.
+
+---
+
+## Project Status
+
+**Work in Progress**
+
+This project is part of my Data Engineering portfolio and demonstrates how to build production-inspired ETL pipelines using Python, SQL, testing, and software engineering best practices.
+
+---
+
+## Author
+
+**Catherine Wairimu Nditu**
+
+* GitHub: https://github.com/CatherineNditu
+* LinkedIn: https://www.linkedin.com/in/catherine-wairimu-nditu/
